@@ -9,7 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
 
@@ -34,7 +40,11 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             TableModel model = items.get(position);
             holder.name_table.setText(model.getName());
             holder.id_table.setText(model.getId());
-            holder.time_table.setText(model.getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(model.getTime());
+            Locale locale = new Locale("ru", "RU");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", locale);
+            holder.time_table.setText(sdf.format(calendar.getTime()));
         } else {
             return;
         }

@@ -1,9 +1,11 @@
 package com.dim_on2.smart_camera;
 
+import java.util.Date;
+
 public class TableModel {
     private String name;
     private String id;
-    private String time;
+    private Date time;
 
     public String getName() {
         return name;
@@ -13,11 +15,11 @@ public class TableModel {
         return id;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public TableModel(String name, String id, String date) {
+    public TableModel(String name, String id, Date date) {
         this.name = name;
         this.id = id;
         this.time = date;

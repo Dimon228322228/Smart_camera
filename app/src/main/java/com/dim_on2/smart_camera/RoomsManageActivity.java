@@ -22,8 +22,6 @@ public class RoomsManageActivity extends CommonActivity {
 
         listView = findViewById(R.id.list_rooms);
         RoomAdapter adapter = new RoomAdapter(this, R.layout.room_item, getRooms());
-        listView.setOnItemClickListener((parent, itemClicked, position, id) ->
-                Toast.makeText(getApplicationContext(), ((TextView) itemClicked).getText(), Toast.LENGTH_SHORT).show());
         listView.setAdapter(adapter);
     }
 

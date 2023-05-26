@@ -1,6 +1,7 @@
 package com.dim_on2.smart_camera;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,10 +31,12 @@ public class AuthActivity extends CommonActivity {
         {
             String loginText = email.getText().toString();
             String passwordText = password.getText().toString();
+            Log.d("hfh", "jj");
             System.out.println(loginText + passwordText);
             if (!loginText.equals("") && !passwordText.equals("")) {
                 try {
                     if (DB.getInstance().isAuth(Integer.parseInt(loginText), passwordText)){
+                        RoomsManageActivity.teacher_id = Integer.parseInt(loginText);
                         updateUI(AuthActivity.this, RoomsManageActivity.class);
                     } else {
                         showError("Invalid login or password");

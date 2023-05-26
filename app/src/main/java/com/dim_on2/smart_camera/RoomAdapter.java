@@ -1,6 +1,7 @@
 package com.dim_on2.smart_camera;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,7 @@ public class RoomAdapter extends ArrayAdapter<Room> {
         }
         final int product = productList.get(position).getId();
 
-        viewHolder.button.setClickable(false);
-        viewHolder.button.setText(product);
+        viewHolder.button.setText("" + product);
 
         return convertView;
     }
@@ -50,6 +50,11 @@ public class RoomAdapter extends ArrayAdapter<Room> {
         final Button button;
         ViewHolder(View v){
             button = v.findViewById(R.id.room_button);
+            button.setOnClickListener((View v1) -> {
+                Intent intent = new Intent(v1.getContext(), InfoRoom.class);
+                InfoRoom.room_id = Integer.parseInt((String) button.getText());
+                v1.getContext().startActivity(intent);
+            });
         }
     }
 

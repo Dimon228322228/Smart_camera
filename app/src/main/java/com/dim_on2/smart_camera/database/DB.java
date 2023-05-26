@@ -1,5 +1,7 @@
 package com.dim_on2.smart_camera.database;
 
+import com.dim_on2.smart_camera.TableModel;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +23,7 @@ public class DB {
     private String teacher_password;
     private List<Room> rooms;
     private List<Integer> roomsId;
+    private List<TableModel> models;
     private boolean flag;
     private Connection connection;
     private String URL = "jdbc:postgresql://ep-misty-fire-374016.eu-central-1.aws.neon.tech/neondb";
@@ -331,6 +336,7 @@ public class DB {
         PreparedStatement preparedStatement = getConnection().prepareStatement(query);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         String s = resultSet.getString(1);
         preparedStatement.close();
         return s;
@@ -375,5 +381,42 @@ public class DB {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<TableModel> getTableModelByTimeDB(Date date, int idRoom) throws SQLException, ClassNotFoundException {
+        ArrayList<TableModel> model = new ArrayList<>();
+        PreparedStatement preparedStatement = getConnection().prepareStatement("select fio, id_person, date from visitors join persons on visitors.id_person = persons.id where visitors.date >= ? and visitors.date < ? and id_room = ?");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        preparedStatement.setDate(1, new java.sql.Date(date.getTime()));
+        preparedStatement.setDate(2, new java.sql.Date(cal.getTime().getTime()));
+        preparedStatement.setInt(3, idRoom);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            model.add(new TableModel(resultSet.getString(1), resultSet.getString(2), resultSet.getTimestamp(3)));
+        }
+        preparedStatement.close();
+        return model;
+    }
+
+    public List<TableModel> getTableModelByTime(Date date, int idRoom) throws SQLException, ClassNotFoundException {
+        Thread thread = new Thread(() -> {
+            try {
+                models = getTableModelByTimeDB(date, idRoom);
+            } catch (Exception e) {
+                status = false;
+                System.out.print(e.getMessage());
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.status = false;
+        }
+        return models;
     }
 }
