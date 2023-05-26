@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ITMO Face Id</string>
+    <string name="app_email">Email</string>
+    <string name="app_password">Password</string>
+    <string name="app_log_in">Log in</string>
+    <string name="rooms">Rooms</string>
+    <string name="back">Back</string>
+    <string name="choose_day">Choose day</string>
+    <string name="month">Month:</string>
+    <string name="day">Day:</string>
+    <string name="year">Year:</string>
+    <string name="init_date">01.01.2023</string>
+    <string name="name_table">Name</string>
+    <string name="id_table">ISU</string>
+    <string name="time_table">Time</string>
+</resources>
