@@ -32,7 +32,7 @@
         android:drawablePadding="12dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:hint="@string/app_email"
+        android:hint="@string/app_ISU"
         android:minHeight="48dp"
 
         />

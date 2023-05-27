@@ -22,7 +22,7 @@ public class InfoRoom extends CommonActivity {
     public static int room_id;
     private RecyclerView recyclerView;
     private TableAdapter adapter;
-
+    private Thread thread;
     private DatePickerDialog datePickerDialog;
     private TextView number_the_room;
 
@@ -42,6 +42,19 @@ public class InfoRoom extends CommonActivity {
         date_picker.setOnClickListener( (View v) -> openDataPicker() );
         number_the_room = findViewById(R.id.number_the_room);
         number_the_room.setText(""+room_id);
+        thread = new Thread(this::updateList);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        thread.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        thread.interrupt();
     }
 
     private String getToday() {
@@ -89,6 +102,16 @@ public class InfoRoom extends CommonActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private void updateList(){
+        while(true){
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            setRecycleView();
+        }
+    }
     private List<TableModel> getList() {
         try {
             return DB.getInstance().getTableModelByTime(getDateFromString((String) date_picker.getText()), room_id);

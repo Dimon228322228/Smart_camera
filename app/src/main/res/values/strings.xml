@@ -14,4 +14,5 @@
     <string name="id_table">ISU</string>
     <string name="time_table">Time</string>
     <string name="the_room">Room</string>
+    <string name="app_ISU">ISU number</string>
 </resources>
