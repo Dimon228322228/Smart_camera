@@ -57,6 +57,12 @@ public class InfoRoom extends CommonActivity {
         thread.interrupt();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        thread.interrupt();
+    }
+
     private String getToday() {
         Calendar calendar = Calendar.getInstance();
         return makeDateString(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
