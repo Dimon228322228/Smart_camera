@@ -20,6 +20,7 @@ import java.util.List;
 
 public class InfoRoom extends CommonActivity {
     public static int room_id;
+    private boolean is_work;
     private RecyclerView recyclerView;
     private TableAdapter adapter;
     private Thread thread;
@@ -48,19 +49,22 @@ public class InfoRoom extends CommonActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        is_work = true;
         thread.start();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
+        is_work = false;
         thread.interrupt();
+        super.onStop();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
+        is_work = false;
         thread.interrupt();
+        super.onPause();
     }
 
     private String getToday() {
@@ -109,13 +113,13 @@ public class InfoRoom extends CommonActivity {
     }
 
     private void updateList(){
-        while(true){
+        while(is_work){
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                is_work = false;
             }
-            setRecycleView();
+            runOnUiThread(this::setRecycleView);
         }
     }
     private List<TableModel> getList() {
